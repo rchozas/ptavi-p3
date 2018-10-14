@@ -5,7 +5,7 @@ from xml.sax import make_parser
 from xml.sax.handler import ContentHandler
 
 
-class SmallSmilHandler(ContentHandler):
+class SmallSMILHandler(ContentHandler):
 
     def __init__(self):
         self.lista_etiq = []
@@ -32,7 +32,7 @@ if __name__ == "__main__":
     Programa principal
     """
     parser = make_parser()
-    cHandler = SmallSmilHandler()
+    cHandler = SmallSMILHandler()
     parser.setContentHandler(cHandler)
     parser.parse(open("karaoke.smil"))
     print(cHandler.get_tags())
