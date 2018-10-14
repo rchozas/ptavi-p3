@@ -14,22 +14,17 @@ class SmallSmilHandler(ContentHandler):
                      'img': ['src', 'region', 'begin', 'dur'],
                      'audio': ['src', 'begin', 'dur'],
                      'textstream': ['src', 'region']}
-                                
 
     def startElement(self, name, attrs):
         if name in self.dicc:
             dicc_nuevo = {}
-            
             for atributo in self.dicc[name]:
                 dicc_nuevo[atributo] = attrs.get(atributo, " ")
-                
                 dicc_completo = {name: dicc_nuevo}
             self.lista_etiq.append(dicc_completo)
-            
-            
+
     def get_tags(self):
         return self.lista_etiq
-        
 
 
 if __name__ == "__main__":
@@ -41,4 +36,3 @@ if __name__ == "__main__":
     parser.setContentHandler(cHandler)
     parser.parse(open("karaoke.smil"))
     print(cHandler.get_tags())
-    
