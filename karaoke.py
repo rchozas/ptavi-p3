@@ -23,18 +23,38 @@ class KaraokeLocal(SmallSMILHandler):
         linea = " "
         for elemento in self.info:
             linea = linea + elemento[0]
-            atributos = elemento[1].items()
-            for nombre, valor in atributos:
+            dicc = elemento[1].items()
+            for nombre, valor in dicc:
                 linea = linea + "\t" + nombre + "=" + '"' + valor + '"'
             linea = linea + "\n"
-        return linea 
+        return linea
         
+    def to_json(self, fichero, fjson=""):
+        if fjson == "":
+            fjson = fichero.split(".")[0] + ".json"
+        with open(fjson, 'w') as fichero_json:
+            json.dump(self.info, fichero_json, sort_keys=True, indent=4) 
+            
+    def do_local(self):
+        for elemento in self.info:
+            dicc= elemento[1]
+            for atributo in dicc:
+                if atributo == 'src':
+                    if dicc[atributo].split("/")[0] == "http:":
+                        urllib.request.urlretrieve(dicc[atributo],
+                                dicc[atributo].split("/")[-1])
+                        dicc[atributo] = dicc[atributo].split("/")[-1]        
     
         
 if __name__ == "__main__":
     try:
         fichero = sys.argv[1]
-        
+        karaoke = KaraokeLocal(fichero)
+        print(karaoke)
+        karaoke.to_json(fichero)
+        karaoke.do_local()
+        karaoke.to_json(fichero, "local.json")
+        print(karaoke)
     except IndexError:
         sys.exit("Usage: python3 karaoke.py file.smil")
 
